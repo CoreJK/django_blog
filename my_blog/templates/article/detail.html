@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}
+	文章详情
+{% endblock title %}
+
+{% block content %}
+
+<!-- 文章详情 -->
+<div class="container">
+    <div class="row">
+        <!-- 标题及作者 -->
+        <div class="col-9">
+            <h1 class="mt-4 mb-4">{{ article.title }}</h1>
+            <div class="alert alert-success">
+                <div>
+                    👩‍💻作者：{{ article.author }}
+                    {% if user == article.author %}
+                        · <a href="#" onclick="confirm_safe_delete()">☠删除本文</a>
+                        · <a href="{% url "article:article_update" article.id %}">🖊编辑文章</a>
+                     {% endif %} 
+                </div>
+
+                <div>
+                    👁浏览: {{ article.total_views }} 
+                </div>
+
+                <form 
+                    style="display:none;" 
+                    id="safe_delete" 
+                    action="{% url 'article:article_safe_delete' article.id %}" 
+                    method="POST">
+                    {% csrf_token %}
+                    <button type="submit">发送</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 新增的目录 -->
+        <div class="col-3 mt-4">
+            <h4><strong>📑目录</strong></h4>
+            <hr>
+            <div>
+                {{ toc|safe }}
+            </div>
+        </div>
+
+        <!-- 文章正文 -->
+        <div class="col-9">
+            <p>{{ article.body|safe }}</p>
+        </div>
+
+        <!-- 发表评论 -->
+        <hr>
+        {% if user.is_authenticated %}
+            <div class="col-9">
+                <form action="{% url 'comment:post_comment' article.id%}" 
+                      method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="body">
+                            <strong>📢我也要发言:</strong>
+                        </label>
+
+                        <textarea 
+                            type="text" 
+                            class="form-control" 
+                            id="body" 
+                            name="body" 
+                            rows="2"></textarea>
+
+                        <!-- 提交按钮 -->
+                        <button type="submit" class="btn btn-primary">✈发送</button>
+                    </div>
+                </form>
+            </div>
+            <br>
+        {% else %}
+            <br>
+            <div class="col-9">
+                <h5 class="row justify-content-center">
+                    的请<a href="{% url 'userprofile:login' %}">登录</a>后回复
+                </h5>
+            </div>
+            <br>
+        {% endif %}
+
+        <!-- 显示评论 -->
+        <div class="col-9">
+            <h4>🎉共有{{ comments.count}}条评论🎉</h4>
+            {% for comment in comments %}
+                <hr>
+                <p>
+                    <strong style="color: pink">
+                        {{ comment.user }}
+                    </strong> 于
+                    <span style="color: green">
+                        {{ comment.created|date:"Y-m-d H:i:s" }}
+                    </span> 时说:
+                </p>
+                <pre style="font-family: inherit; font-size: 1em;">{{ comment.body }}</pre>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    function confirm_safe_delete() {
+        layer.open({
+            title: "确认删除",
+            content: "确认删除这篇文章吗？",
+            yes: function(index, layero) {
+                // body...
+                $('form#safe_delete button').click();
+                layer.close(index);
+            }
+        })
+    }
+</script>
+
+{% endblock content %}
