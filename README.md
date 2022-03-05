@@ -1,7 +1,12 @@
-# django_blog
-基于 Django 的博客练手项目
-基于函数视图的前后端耦合
+## 项目背景
 
+通过学习『杜赛』大佬的搭建 Django 博客&论坛的教程，通过实际上线站点，熟悉 Django 项目的部署流程。
+当前站点的业务视图，是基于函数的视图，基于类的视图仍在继续学习中。
+在此记录部署遇到的问题，以及解决步骤。
+
+## 部署环境
+
+## 部署步骤
 
 ## 参考教程
-https://www.dusaiphoto.com/article/2/
+[ Dusai 大佬的博客部署教程](https://github.com/stacklens/django_blog_tutorial)
