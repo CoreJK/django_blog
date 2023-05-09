@@ -54,9 +54,10 @@
    $ git config --global user.name "your self"
    $ git config --global user.email yourEmail@example.com
    ```
-   
 4. 安装 Nginx
 
+   > 在 linux 上部署需要配置，windows 本地调试可以不用安装 Nginx 
+     
    ```bash
    $ sudo apt-get install nginx
    ```
@@ -71,17 +72,15 @@
    $ git git@git@github.com:CoreJK/django_blog.git
    ```
 
-   我的项目代码里，需要新键一个`meida`目录，进入 `/home/sites/django_blog/my_blog`
-
-   ```
-   $ sudo mkdir /media
-   ```
+   ~~我的项目代码里，需要新键一个`meida`目录，进入 `/home/sites/django_blog/my_blog`~~
 
    还需要在 `/home/sites/django_blog/myblog/` 目录下新键一个`.env`文件
 
    > 在开发时我们往 `settings.py` 中写入如 SECRET_KEY 、邮箱密码等各种敏感信息，部署时千万不要直接上传到互联网（GitHub 库是公开的！），而是把这些信息写到服务器本地，然后在 `settings.py` 中读取。
    >
    > **该文件是`settings.py`配置信息的环境变量，我选用了`django-environ==0.8.1`模块，因此需要配置此文件**
+   > 
+   > 下面文件中的中文注释，一定要删除！否则执行后续的 `python manage.py` 命令会报错！
 
    ```
    # 关闭debug模式
@@ -99,7 +98,7 @@
    ALLOWED_HOSTS='*'
    ```
 
-   **这个文件一定要添加到 `.gitignore` 文件中，这里存放着许多配置信息！不能被g it 版本控制记录**
+   **这个文件一定要添加到 `.gitignore` 文件中，这里存放着许多配置信息！不能被 git 版本控制记录**
 
 6. 代码部署
 

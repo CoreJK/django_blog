@@ -23,4 +23,4 @@ class ArticleComment(models.Model):
         ordering = ('created',)
 
     def __str__(self):
-        return self.body[:20]	
+        return self.body[:20]
